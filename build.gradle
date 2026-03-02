@@ -1,0 +1,78 @@
+plugins {
+    id("java")
+    id("io.github.goooler.shadow") version "8.1.8"
+}
+
+group = "kz.hxncus.mc"
+version = "1.0.0"
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    maven { url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/" }
+    maven { url = "https://oss.sonatype.org/content/groups/public/" }
+    maven { url = 'https://jitpack.io' }
+}
+
+def spigot = project.property("spigot")
+def lombok = project.property("lombok")
+def bstats = project.property("bstats")
+def junit = project.property("junit")
+def mockito = project.property("mockito")
+
+dependencies {
+    // Spigot
+    compileOnly("org.spigotmc:spigot-api:${spigot}-R0.1-SNAPSHOT")
+
+    // Vault
+    compileOnly("com.github.MilkBowl:VaultAPI:1.7.1")
+
+    // Cache
+    implementation("com.github.ben-manes.caffeine:caffeine:3.1.8")
+
+    // Lombok
+    compileOnly("org.projectlombok:lombok:${lombok}")
+    annotationProcessor("org.projectlombok:lombok:${lombok}")
+
+    // BStats
+    implementation("org.bstats:bstats-bukkit:${bstats}")
+
+    // Test frameworks JUnit, Mockito and MockBukkit
+    testImplementation("org.junit.jupiter:junit-jupiter:${junit}")
+    testImplementation("org.mockito:mockito-core:${mockito}")
+    compileOnly "org.spigotmc:spigot-api:1.20.2-R0.1-SNAPSHOT"
+}
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(8)
+    withJavadocJar()
+    withSourcesJar()
+}
+
+build {
+    dependsOn(shadowJar)
+}
+
+shadowJar {
+    archiveClassifier.set("")
+    archiveFileName.set("${rootProject.name}-${version}.jar")
+    relocate("org.bstats", "${project.group}.${rootProject.name.toLowerCase()}.metrics")
+    mustRunAfter(clean)
+}
+
+tasks.test {
+    useJUnitPlatform()
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+processResources {
+    def props = [version: version]
+    inputs.properties props
+    filteringCharset 'UTF-8'
+    filesMatching('plugin.yml') {
+        expand props
+    }
+}

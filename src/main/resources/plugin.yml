@@ -1,0 +1,8 @@
+name: "DynamicShop"
+version: "${version}"
+main: "kz.hxncus.mc.dynamicshop.DynamicShop"
+api-version: "1.13"
+depend:
+  - "Vault"
+authors: ["Hxncus"]
+website: "https://modrinth.com/organization/mineson"
