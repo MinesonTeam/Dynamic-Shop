@@ -1,6 +1,6 @@
 package kz.hxncus.mc.dynamicshop;
 
-import kz.hxncus.mc.dynamicshop.service.EconomyService;
+import kz.hxncus.mc.dynamicshop.adapter.VaultEconomyAdapter;
 import lombok.Getter;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
@@ -11,7 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class DynamicShop extends JavaPlugin {
 
     private Economy economy;
-    private EconomyService economyService;
+    private VaultEconomyAdapter economyService;
 
     @Getter
     private static DynamicShop instance;
@@ -26,7 +26,7 @@ public final class DynamicShop extends JavaPlugin {
             return;
         }
 
-        this.economyService = new EconomyService(this);
+        this.economyService = new VaultEconomyAdapter(economy);
 
         getLogger().info(getName() + " enabled");
     }

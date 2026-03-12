@@ -1,18 +1,16 @@
-package kz.hxncus.mc.dynamicshop.service;
+package kz.hxncus.mc.dynamicshop.adapter;
 
-import kz.hxncus.mc.dynamicshop.DynamicShop;
 import lombok.RequiredArgsConstructor;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.OfflinePlayer;
 
 @RequiredArgsConstructor
-public class EconomyService {
+public class VaultEconomyAdapter {
 
-    private final DynamicShop plugin;
+    private final Economy economy;
 
     private Economy economy() {
-        Economy economy = plugin.getEconomy();
         if (economy == null) {
             throw new IllegalStateException("Vault economy is not available");
         }
@@ -36,17 +34,15 @@ public class EconomyService {
             throw new IllegalArgumentException("Withdraw amount must be greater than 0");
         }
 
-        Economy economy = economy();
-
-        if (!economy.has(player, amount)) {
+        if (!economy().has(player, amount)) {
             return new EconomyResponse(
                     0,
-                    economy.getBalance(player),
+                    economy().getBalance(player),
                     EconomyResponse.ResponseType.FAILURE,
                     "Player does not have enough money"
             );
         }
 
-        return economy.withdrawPlayer(player, amount);
+        return economy().withdrawPlayer(player, amount);
     }
 }

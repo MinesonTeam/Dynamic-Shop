@@ -21,8 +21,7 @@ def junit = project.property("junit")
 def mockito = project.property("mockito")
 
 dependencies {
-    testImplementation("org.spigotmc:spigot-api:${spigot}-R0.1-SNAPSHOT")
-    testImplementation("com.github.MilkBowl:VaultAPI:1.7.1")
+
     // Spigot
     compileOnly("org.spigotmc:spigot-api:${spigot}-R0.1-SNAPSHOT")
 
@@ -40,6 +39,9 @@ dependencies {
     implementation("org.bstats:bstats-bukkit:${bstats}")
 
     // Test frameworks JUnit, Mockito and MockBukkit
+    testImplementation("org.spigotmc:spigot-api:${spigot}-R0.1-SNAPSHOT")
+    testImplementation("com.github.MilkBowl:VaultAPI:1.7.1")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation("org.junit.jupiter:junit-jupiter:${junit}")
     testImplementation("org.mockito:mockito-core:${mockito}")
     compileOnly "org.spigotmc:spigot-api:1.20.2-R0.1-SNAPSHOT"
