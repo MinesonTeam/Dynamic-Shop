@@ -13,10 +13,12 @@ public class ShopMapper {
         if (shop == null){
             return null;
         }
-        List<ItemDTO> items = shop.getItems()
-                .stream()
-                .map(ItemMapper::toDTO)
-                .collect(Collectors.toList());
+        List<ItemDTO> items = shop.getItems() == null
+                ? null
+                : shop.getItems()
+                    .stream()
+                    .map(ItemMapper::toDTO)
+                    .collect(Collectors.toList());
         return new ShopDTO(
                 Long.parseLong(shop.getId()),
                 shop.getId(),
@@ -29,10 +31,13 @@ public class ShopMapper {
             return null;
         }
 
-        List<Item> items = dto.getItems()
-                .stream()
-                .map(ItemMapper::toItem)
-                .collect(Collectors.toList());
+        List<Item> items = dto.getItems() == null
+                ?null
+                :dto.getItems()
+
+                    .stream()
+                    .map(ItemMapper::toItem)
+                    .collect(Collectors.toList());
 
         return new Shop(
                 String.valueOf(dto.getId()),
